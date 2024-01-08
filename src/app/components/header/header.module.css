@@ -1,0 +1,27 @@
+.HeaderWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 30px;
+}
+
+.bookmark {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    
+    padding: 5px 10px;
+
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: solid 1px #cccccc;
+
+    color: #555555;
+}
+
+.bookmark:hover {
+    cursor: pointer;
+}
