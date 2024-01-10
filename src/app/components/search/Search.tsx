@@ -6,26 +6,36 @@ import styles from "./search.module.css";
 import { UnsplashPhoto } from "@/types/unsplash";
 import searchBoxBackground from "/public/images/search_box_background.jpg";
 import searchIcon from "/public/images/search_icon.svg";
+import Pagination from "../pagination/Pagination";
 
 type SearchProps = {
     isLoading: boolean;
     photos: UnsplashPhoto[];
+    searchTotal: number;
     onSearch: (query: string) => void;
+    onPageChange: (page: number, searchTerm?: string) => void;
 }
 
-const Search: React.FC<SearchProps> = ({ isLoading, photos, onSearch }) => {
+const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearch, onPageChange }) => {
     const [searchTerm, setSearchTerm] = useState<string>("");
+    const [currentPage, setCurrentPage] = useState(1);
 
     // NOTE(hajae): return키/Enter키로 검색하기 위해
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            console.log(searchTerm)
             onSearch(searchTerm);
+            setCurrentPage(1);
         }
     };
 
     const handleSearch = () => {
         onSearch(searchTerm);
+        setCurrentPage(1);
+    };
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        onPageChange(page, searchTerm);
     };
 
     // NOTE(hajae): 사진이 로딩, 유무에 따른 표시
@@ -88,6 +98,9 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, onSearch }) => {
             <div className={styles.PhotoBoxes}>
                 {renderPhotos()}
             </div>
+            {!isLoading && photos.length !== 0 && <div>
+                <Pagination currentPage={currentPage} totalItems={searchTotal} onPageChange={handlePageChange} />
+            </div>}
         </div>
     )
 }

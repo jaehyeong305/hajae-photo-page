@@ -1,7 +1,8 @@
 // NOTE(hajae): GET /api/unsplash
-export const GET = async () => {
+export const GET = async (request: Request, { params }: { params: { page: string }}) => {
     try {
-        const response = await fetch('https://api.unsplash.com/photos', {
+        const page = params.page;
+        const response = await fetch(`https://api.unsplash.com/photos?per_page=20&page=${page}`, {
             headers: {
                 'Authorization': `Client-ID 35uTnjYzFrY-HrbqXeIQC8n2byaF0PtHxxGFj0e956w`,
             },
