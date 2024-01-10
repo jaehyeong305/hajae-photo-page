@@ -1,20 +1,32 @@
 'use client'
 
+import { useEffect, useState } from 'react';
 import { Photo } from '@/types/unsplash';
 import styles from './modal.module.css';
 import Image from 'next/image';
 import close from '/public/images/modal_close.svg';
-import { useState } from 'react';
+import bookmarkWhite from "/public/images/bookmark_white.svg";
+import bookmarkFill from "/public/images/bookmark_fill.svg";
 import LoadingSpinner from '../loadingSpinner/LoadingSpinner';
 import Tag from '../tag/Tag';
 
 type ModalProps = {
     photoInfo: Photo;
     onClose: () => void;
+    onBookmarkClick: (photoId: string) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose, photoInfo }) => {
+const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) => {
     const [loading, setLoading] = useState(true);
+    const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+
+    useEffect(() => {
+        const storedBookmarks = localStorage.getItem("bookmarks");
+        if (storedBookmarks) {
+            const bookmarks = JSON.parse(storedBookmarks) as string[];
+            setIsBookmarked(bookmarks.includes(photoInfo.id));
+        }
+    }, []);
 
     return (
         <div className={styles.ModalBackground}>
@@ -27,7 +39,18 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo }) => {
                         <span className={styles.ModalHeaderItem}>{photoInfo.user.username}</span>
                     </div>
                     <div className={styles.ModalHeaderItems}>
-                        <span className={styles.ModalHeaderItem}>하트</span>
+                        <span className={styles.ModalHeaderItem}>
+                            <Image
+                                className="Bookmark"
+                                src={isBookmarked ? bookmarkFill.src : bookmarkWhite.src}
+                                alt="bookmark"
+                                width={30}
+                                height={30}
+                                onClick={() => {
+                                    setIsBookmarked(!isBookmarked);
+                                    onBookmarkClick(photoInfo.id);
+                                }} />
+                        </span>
                         <span className={styles.ModalHeaderItem}>다운로드</span>
                     </div>
                 </div>
@@ -58,7 +81,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo }) => {
                 </div>
                 <div className={styles.ModalImageTags}>
                     {photoInfo.tags.map((tag, index) => (
-                        <Tag key={index} title={tag.title}/>
+                        <Tag key={index} title={tag.title} />
                     ))}
                 </div>
             </div>

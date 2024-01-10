@@ -103,6 +103,8 @@
     bottom: 0;
     margin: 5px;
     z-index: 1;
+
+    cursor: pointer;
 }
 
 .PhotoNotFound {

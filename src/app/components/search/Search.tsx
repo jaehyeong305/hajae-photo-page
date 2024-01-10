@@ -11,6 +11,7 @@ import bookmarkFill from "/public/images/bookmark_fill.svg";
 import Pagination from "../pagination/Pagination";
 import Modal from "../modal/Modal";
 import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
+import useLocalStorage from "@/app/hooks/useLocalStorage";
 
 type SearchProps = {
     isLoading: boolean;
@@ -25,10 +26,7 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
     const [currentPage, setCurrentPage] = useState(1);
 
     // NOTE(hajae): 로그인 기능이 따로 구현이 되어있지 않기 때문에 로컬스토리지에 북마크를 저장/관리
-    const [bookmarks, setBookmarks] = useState<string[]>(() => {
-        const storedBookmarks = localStorage.getItem("bookmarks");
-        return storedBookmarks ? JSON.parse(storedBookmarks) : [];
-    });
+    const [bookmarks, setBookmarks] = useLocalStorage<string[]>('bookmarks', []);
 
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -153,7 +151,7 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
                 <Pagination currentPage={currentPage} totalItems={searchTotal} onPageChange={handlePageChange} />
             </div>}
             {isModalOpen && selectedPhoto && (
-                <Modal onClose={closeModal} photoInfo={selectedPhoto} />
+                <Modal onClose={closeModal} photoInfo={selectedPhoto} onBookmarkClick={handleBookmarkClick} />
             )}
         </div>
     )
