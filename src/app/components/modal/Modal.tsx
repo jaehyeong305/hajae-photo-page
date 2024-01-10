@@ -9,6 +9,7 @@ import bookmark from "/public/images/bookmark.svg";
 import bookmarkFill from "/public/images/bookmark_fill.svg";
 import LoadingSpinner from '../loadingSpinner/LoadingSpinner';
 import Tag from '../tag/Tag';
+import CustomButton from '../customButton/CustomButton';
 
 type ModalProps = {
     photoInfo: Photo;
@@ -51,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
                                     onBookmarkClick(photoInfo.id);
                                 }} />
                         </span>
-                        <span className={styles.ModalHeaderItem}>다운로드</span>
+                        <CustomButton value="다운로드" />
                     </div>
                 </div>
                 <div className={styles.ModalImageBox}>

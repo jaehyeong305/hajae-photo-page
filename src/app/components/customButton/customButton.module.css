@@ -1,0 +1,17 @@
+.CustomButtonWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    
+    padding: 5px 10px;
+
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: solid 1px #cccccc;
+
+    color: #555555;
+    font-size: 14px;
+
+    cursor: pointer;
+}
