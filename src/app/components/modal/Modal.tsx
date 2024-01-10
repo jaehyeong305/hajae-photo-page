@@ -29,6 +29,47 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
         }
     }, []);
 
+    // NOTE(hajae): photo response의 download_location를 이용해 download url을 request
+    const handleDownloadButton = async () => {
+        const response = await fetch(photoInfo.links.download_location, {
+            headers: {
+                'Authorization': `Client-ID 35uTnjYzFrY-HrbqXeIQC8n2byaF0PtHxxGFj0e956w`,
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Download failed: ${errorData.message}`);
+        }
+
+        const res = await response.json();
+        handleDownload(res.url);
+    }
+
+    // NOTE(hajae): download url을 이용해, 다운로드 링크를 생성하고 클릭하여 다운로드
+    const handleDownload = async (downloadUrl: string) => {
+        const response = await fetch(downloadUrl);
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Download failed: ${errorData.message}`);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+
+        link.setAttribute('href', url);
+        link.setAttribute('download', photoInfo.id + '.jpg');
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.parentNode?.removeChild(link);
+        window.URL.revokeObjectURL(url)
+    }
+
     return (
         <div className={styles.ModalBackground}>
             <div className={styles.ModalContent}>
@@ -52,7 +93,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
                                     onBookmarkClick(photoInfo.id);
                                 }} />
                         </span>
-                        <CustomButton value="다운로드" />
+                        <CustomButton value="다운로드" onClick={handleDownloadButton} />
                     </div>
                 </div>
                 <div className={styles.ModalImageBox}>
