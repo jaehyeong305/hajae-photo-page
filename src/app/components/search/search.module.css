@@ -97,6 +97,11 @@
     object-fit: cover;
 }
 
+.PhotoImage:hover {
+    filter: brightness(0.7);
+    cursor: pointer;
+}
+
 .Bookmark {
     position: absolute;
     right: 0;

@@ -1,8 +1,8 @@
-import { UnsplashPhoto } from "./unsplash";
+import { PhotoForList } from "./unsplash";
 
 type SearchPhotos = {
     photos: {
-        results: UnsplashPhoto[];
+        results: PhotoForList[];
         total: number;
         totalPages: number;
     }
