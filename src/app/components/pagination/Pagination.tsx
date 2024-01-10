@@ -59,6 +59,7 @@ const Pagination: React.FC<PagenationProps> = ({ currentPage, totalItems, onPage
     return (
         <div className={styles.Pagination}>
             <ul className={styles.PaginationBox}>
+                {/*NOTE(hajae): '<' 왼쪽 페이지로 */}
                 {
                     currentPage === 1 ?
                         <li className={styles.Disabled}>
@@ -85,6 +86,7 @@ const Pagination: React.FC<PagenationProps> = ({ currentPage, totalItems, onPage
                         </li>
                     )
                 ))}
+                {/*NOTE(hajae): '>' 오른쪽 페이지로 */}
                 {
                     currentPage === totalPages ?
                         <li className={styles.Disabled}>

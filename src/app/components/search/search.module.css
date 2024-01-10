@@ -97,6 +97,14 @@
     object-fit: cover;
 }
 
+.Bookmark {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 5px;
+    z-index: 1;
+}
+
 .Loading {
     position: absolute;
     display: flex;
