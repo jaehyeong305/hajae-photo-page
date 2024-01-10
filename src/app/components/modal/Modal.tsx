@@ -6,6 +6,7 @@ import Image from 'next/image';
 import close from '/public/images/modal_close.svg';
 import { useState } from 'react';
 import LoadingSpinner from '../loadingSpinner/LoadingSpinner';
+import Tag from '../tag/Tag';
 
 type ModalProps = {
     photoInfo: Photo;
@@ -21,7 +22,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo }) => {
                 <div className={styles.ModalHeader}>
                     <div className={styles.ModalHeaderItems}>
                         <span className={`${styles.ModalClose} ${styles.ModalHeaderItem}`} onClick={onClose}>
-                            <Image src={close.src} width={24} height={24} alt='close' />
+                            <Image src={close.src} width={20} height={20} alt='close' />
                         </span>
                         <span className={styles.ModalHeaderItem}>{photoInfo.user.username}</span>
                     </div>
@@ -56,7 +57,9 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo }) => {
                     </div>
                 </div>
                 <div className={styles.ModalImageTags}>
-
+                    {photoInfo.tags.map((tag, index) => (
+                        <Tag key={index} title={tag.title}/>
+                    ))}
                 </div>
             </div>
         </div>
