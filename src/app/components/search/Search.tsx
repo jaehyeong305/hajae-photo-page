@@ -44,7 +44,7 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
     // NOTE(hajae): return키/Enter키로 검색하기 위해
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            onSearch(searchTerm);
+            searchTerm ? onSearch(searchTerm) : onSearch('');
             setCurrentPage(1);
         }
     };

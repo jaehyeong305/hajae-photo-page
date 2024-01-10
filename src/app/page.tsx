@@ -50,7 +50,14 @@ export default function Home() {
     }
   }
 
-  const handleSearch = async (searchTerm: string) => {
+  const handleSearch = async (searchTerm?: string) => {
+    // NOTE(hajae): 빈값으로 검색 -> 기본 fetch api를 request
+    if (!searchTerm) {
+      fetchPhotos();
+      setSearchTotal(20000);
+      return;
+    }
+
     try {
       setIsLoading(true);
       setIsSearched(true);
