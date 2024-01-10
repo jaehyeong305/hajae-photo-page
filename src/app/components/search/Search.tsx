@@ -9,6 +9,7 @@ import searchIcon from "/public/images/search_icon.svg";
 import bookmarkWhite from "/public/images/bookmark_white.svg";
 import bookmarkFill from "/public/images/bookmark_fill.svg";
 import Pagination from "../pagination/Pagination";
+import Modal from "../modal/Modal";
 
 type SearchProps = {
     isLoading: boolean;
@@ -21,12 +22,15 @@ type SearchProps = {
 const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearch, onPageChange }) => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [currentPage, setCurrentPage] = useState(1);
-    
+
     // NOTE(hajae): 로그인 기능이 따로 구현이 되어있지 않기 때문에 로컬스토리지에 북마크를 저장/관리
     const [bookmarks, setBookmarks] = useState<string[]>(() => {
         const storedBookmarks = localStorage.getItem("bookmarks");
         return storedBookmarks ? JSON.parse(storedBookmarks) : [];
     });
+
+    const [selectedPhoto, setSelectedPhoto] = useState<UnsplashPhoto | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // NOTE(hajae): return키/Enter키로 검색하기 위해
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -59,6 +63,16 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
         }
     };
 
+    const handleImageClick = (photo: UnsplashPhoto) => {
+        setSelectedPhoto(photo);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedPhoto(null);
+    };
+
     // NOTE(hajae): 사진이 로딩, 유무에 따른 표시
     const renderPhotos = () => {
         if (isLoading) {
@@ -83,6 +97,7 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
                         alt={photo.alt_description}
                         width={300}
                         height={300}
+                        onClick={() => handleImageClick(photo)}
                     />
                     <Image
                         className={styles.Bookmark}
@@ -129,6 +144,9 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
             {!isLoading && photos.length !== 0 && <div>
                 <Pagination currentPage={currentPage} totalItems={searchTotal} onPageChange={handlePageChange} />
             </div>}
+            {isModalOpen && selectedPhoto && (
+                <Modal onClose={closeModal} photoInfo={selectedPhoto}/>
+            )}
         </div>
     )
 }
