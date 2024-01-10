@@ -1,9 +1,8 @@
-// NOTE(hajae): GET /api/search
-export const GET = async (request: Request, { params }: { params: { searchTerm: string, page: number }}) => {
+// NOTE(hajae): GET /api/photos/:id
+export const GET = async (request: Request, { params }: { params: { id: string } }) => {
     try {
-        const searchTerm = params.searchTerm;
-        const page = params.page;
-        const response = await fetch(`https://api.unsplash.com/search/photos?per_page=20&query=${searchTerm}&page=${page}`, {
+        const photoId = params.id;
+        const response = await fetch(`https://api.unsplash.com/photos/${photoId}`, {
             headers: {
                 'Authorization': `Client-ID 35uTnjYzFrY-HrbqXeIQC8n2byaF0PtHxxGFj0e956w`,
             },
@@ -17,7 +16,7 @@ export const GET = async (request: Request, { params }: { params: { searchTerm: 
         const photos = await response.json();
         return Response.json({ photos });
     } catch (error) {
-        console.error('Error in GET /api/search: ', error);
+        console.error('Error in GET /api/photos/:id : ', error);
         throw error;
     }
 };

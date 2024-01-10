@@ -1,6 +1,5 @@
 // NOTE(hajae): GET /api/search
-export const GET = async (request: Request, { params }: { params: { searchTerm: string }}
-) => {
+export const GET = async (request: Request, { params }: { params: { searchTerm: string }}) => {
     try {
         const searchTerm = params.searchTerm;
         const response = await fetch(`https://api.unsplash.com/search/photos?per_page=20&query=${searchTerm}`, {

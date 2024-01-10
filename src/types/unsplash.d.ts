@@ -1,4 +1,4 @@
-type UnsplashPhoto = {
+type BasicPhotoInfo = {
     id: string;
     width: number;
     height: number;
@@ -6,24 +6,105 @@ type UnsplashPhoto = {
     blur_hash: string;
     likes: number;
     liked_by_user: boolean;
-    description: string;
     alt_description: string;
-    urls: {
-        raw: string;
-        full: string;
-        regular: string;
+    description: string;
+    urls: Urls,
+    links: Links;
+    user: User;
+}
+
+type PhotoForList = BasicPhotoInfo;
+
+type Photo = BasicPhotoInfo & {
+    created_at: string;
+    updated_at: string;
+    downloads: number;
+    public_domain: boolean;
+    exif: Exif;
+    location: Location;
+    tags: Tag[];
+    current_user_collections: CurrentUserCollection[];
+}
+
+type Urls = {
+    raw: string;
+    full: string;
+    regular: string;
+    small: string;
+    thumb: string;
+}
+
+type Links = {
+    self: string;
+    html: string;
+    download: string;
+    download_location: string;
+}
+
+type User = {
+    id: string;
+    updated_at: string;
+    username: string;
+    name: string;
+    portfolio_url: string;
+    bio: string;
+    location: string;
+    total_likes: number;
+    total_photos: number;
+    total_collections: number;
+    profile_image: {
         small: string;
-        thumb: string;
+        medium: string;
+        large: string;
     };
     links: {
         self: string;
         html: string;
-        download: string;
+        photos: string;
+        likes: string;
+        portfolio: string;
     };
 }
 
-type UnsplashApiResponse = {
-    photos: UnsplashPhoto[];
+type Exif = {
+    make: string;
+    model: string;
+    name: string;
+    exposure_time: string;
+    aperture: string;
+    focal_length: string;
+    iso: number;
 }
 
-export type { UnsplashApiResponse, UnsplashPhoto };
+type Location = {
+    city: string;
+    country: string;
+    position: Position;
+}
+
+type Position = {
+    latitude: number;
+    longitude: number;
+}
+
+type Tag = {
+    title: string;
+}
+
+type CurrentUserCollection = {
+    id: number;
+    title: string;
+    published_at: string;
+    last_collected_at: string;
+    updated_at: string;
+}
+
+type PhotoListResponse = {
+    photos: PhotoList[];
+}
+
+type PhotoResponse = {
+    photos: Photo;
+};
+
+export type { PhotoListResponse, PhotoResponse, PhotoForList, Photo };
