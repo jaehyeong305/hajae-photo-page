@@ -5,7 +5,7 @@ import { Photo } from '@/types/unsplash';
 import styles from './modal.module.css';
 import Image from 'next/image';
 import close from '/public/images/modal_close.svg';
-import bookmarkWhite from "/public/images/bookmark_white.svg";
+import bookmark from "/public/images/bookmark.svg";
 import bookmarkFill from "/public/images/bookmark_fill.svg";
 import LoadingSpinner from '../loadingSpinner/LoadingSpinner';
 import Tag from '../tag/Tag';
@@ -42,7 +42,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
                         <span className={styles.ModalHeaderItem}>
                             <Image
                                 className="Bookmark"
-                                src={isBookmarked ? bookmarkFill.src : bookmarkWhite.src}
+                                src={isBookmarked ? bookmarkFill.src : bookmark.src}
                                 alt="bookmark"
                                 width={30}
                                 height={30}
