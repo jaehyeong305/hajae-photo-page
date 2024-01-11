@@ -10,6 +10,7 @@ import bookmarkFill from "/public/images/bookmark_fill.svg";
 import LoadingSpinner from '../loadingSpinner/LoadingSpinner';
 import Tag from '../tag/Tag';
 import CustomButton from '../customButton/CustomButton';
+import formatDateDifference from '@/app/utils/DateUtil';
 
 type ModalProps = {
     photoInfo: Photo;
@@ -109,16 +110,16 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
                 </div>
                 <div className={styles.ModalImageInfoWrapper}>
                     <div className={styles.ModalImageInfo}>
-                        <span>이미지 크기</span>
-                        <span>{photoInfo.width} x {photoInfo.height}</span>
+                        <span className={styles.ModalImageInfoTitle}>이미지 크기</span>
+                        <span className={styles.ModalImageInfoBody}>{photoInfo.width} x {photoInfo.height}</span>
                     </div>
                     <div className={styles.ModalImageInfo}>
-                        <span>업로드</span>
-                        <span>{photoInfo.updated_at}</span>
+                        <span className={styles.ModalImageInfoTitle}>업로드</span>
+                        <span className={styles.ModalImageInfoBody}>{formatDateDifference(photoInfo.created_at)}</span>
                     </div>
                     <div className={styles.ModalImageInfo}>
-                        <span>다운로드</span>
-                        <span>{photoInfo.downloads}</span>
+                        <span className={styles.ModalImageInfoTitle}>다운로드</span>
+                        <span className={styles.ModalImageInfoBody}>{photoInfo.downloads}</span>
                     </div>
                 </div>
                 <div className={styles.ModalImageTags}>

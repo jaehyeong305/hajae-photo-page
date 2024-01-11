@@ -76,6 +76,14 @@
     gap: 5px;
 }
 
+.ModalImageInfoTitle {
+    color: #555555;
+}
+
+.ModalImageInfoBody {
+    font-weight: 500;
+}
+
 .ModalImageTags {
     display: flex;
     flex-direction: row;
