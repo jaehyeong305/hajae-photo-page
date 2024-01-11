@@ -1,0 +1,14 @@
+.TagWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Tag {
+    padding: 3px 7px;
+    background-color: #dddddd;
+    border-radius: 5px;
+
+    font-size: 14px;
+    color: #555555;
+}

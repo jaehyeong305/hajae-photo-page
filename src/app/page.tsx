@@ -4,13 +4,13 @@ import styles from './page.module.css'
 import Header from './components/header/Header'
 import Search from './components/search/Search'
 import { useEffect, useState } from 'react';
-import { UnsplashPhoto } from '@/types/unsplash';
+import { PhotoForList, PhotoListResponse } from '@/types/unsplash';
 import { SearchPhotos } from '@/types/search';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSearched, setIsSearched] = useState(false);
-  const [photos, setPhotos] = useState<UnsplashPhoto[]>([]);
+  const [photos, setPhotos] = useState<PhotoForList[]>([]);
   const [searchTotal, setSearchTotal] = useState<number>(20000);
 
   const fetchPhotos = async () => {
@@ -40,7 +40,7 @@ export default function Home() {
       } else {
         setIsLoading(true);
         const response = await fetch(`/api/unsplash/${page}`);
-        const data: { photos: UnsplashPhoto[] } = await response.json();
+        const data: PhotoListResponse = await response.json();
         setPhotos(data.photos);
       }
     } catch (error) {
@@ -50,7 +50,14 @@ export default function Home() {
     }
   }
 
-  const handleSearch = async (searchTerm: string) => {
+  const handleSearch = async (searchTerm?: string) => {
+    // NOTE(hajae): 빈값으로 검색 -> 기본 fetch api를 request
+    if (!searchTerm) {
+      fetchPhotos();
+      setSearchTotal(20000);
+      return;
+    }
+
     try {
       setIsLoading(true);
       setIsSearched(true);

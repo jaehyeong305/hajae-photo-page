@@ -3,6 +3,7 @@ import Image from 'next/image'
 import logo from '/public/images/logo.png'
 import bookmark from '/public/images/bookmark.svg'
 import Link from "next/link";
+import CustomButton from "../customButton/CustomButton";
 
 const Header: React.FC = () => {
     return (
@@ -14,9 +15,7 @@ const Header: React.FC = () => {
             </div>
             <div>
                 <Link href="/bookmark" style={{ textDecoration: "none" }}>
-                    <button className={styles.bookmark}>
-                        북마크 <Image src={bookmark.src} width={16} height={16} alt="bookmark" />
-                    </button>
+                    <CustomButton value="북마크" icon={<Image src={bookmark.src} width={16} height={16} alt="bookmark" />}/>
                 </Link>
             </div>
         </div>

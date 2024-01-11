@@ -3,17 +3,19 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./search.module.css";
-import { UnsplashPhoto } from "@/types/unsplash";
+import { Photo, PhotoForList, PhotoResponse } from "@/types/unsplash";
 import searchBoxBackground from "/public/images/search_box_background.jpg";
 import searchIcon from "/public/images/search_icon.svg";
 import bookmarkWhite from "/public/images/bookmark_white.svg";
 import bookmarkFill from "/public/images/bookmark_fill.svg";
 import Pagination from "../pagination/Pagination";
 import Modal from "../modal/Modal";
+import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
+import useLocalStorage from "@/app/hooks/useLocalStorage";
 
 type SearchProps = {
     isLoading: boolean;
-    photos: UnsplashPhoto[];
+    photos: PhotoForList[];
     searchTotal: number;
     onSearch: (query: string) => void;
     onPageChange: (page: number, searchTerm?: string) => void;
@@ -24,18 +26,25 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
     const [currentPage, setCurrentPage] = useState(1);
 
     // NOTE(hajae): 로그인 기능이 따로 구현이 되어있지 않기 때문에 로컬스토리지에 북마크를 저장/관리
-    const [bookmarks, setBookmarks] = useState<string[]>(() => {
-        const storedBookmarks = localStorage.getItem("bookmarks");
-        return storedBookmarks ? JSON.parse(storedBookmarks) : [];
-    });
+    const [bookmarks, setBookmarks] = useLocalStorage<string[]>('bookmarks', []);
 
-    const [selectedPhoto, setSelectedPhoto] = useState<UnsplashPhoto | null>(null);
+    const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const fetchPhotoById = async (photoId: string) => {
+        try {
+            const response = await fetch(`/api/photos/${photoId}`);
+            const data: PhotoResponse = await response.json();
+            setSelectedPhoto(data.photos);
+        } catch (error) {
+            console.error('Error fetching Unsplash data:', error);
+        }
+    };
 
     // NOTE(hajae): return키/Enter키로 검색하기 위해
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            onSearch(searchTerm);
+            searchTerm ? onSearch(searchTerm) : onSearch('');
             setCurrentPage(1);
         }
     };
@@ -63,8 +72,8 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
         }
     };
 
-    const handleImageClick = (photo: UnsplashPhoto) => {
-        setSelectedPhoto(photo);
+    const handleImageClick = (photo: PhotoForList) => {
+        fetchPhotoById(photo.id);
         setIsModalOpen(true);
     };
 
@@ -77,10 +86,7 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
     const renderPhotos = () => {
         if (isLoading) {
             return (
-                <div className={styles.Loading}>
-                    <div className={styles.LoadingSpinner}></div>
-                    <div>Loading...</div>
-                </div>
+                <LoadingSpinner />
             );
         } else if (photos.length === 0) {
             return (
@@ -89,7 +95,7 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
                 </div>
             )
         } else {
-            return photos.map((photo: UnsplashPhoto) => (
+            return photos.map((photo: PhotoForList) => (
                 <div className={styles.PhotoImageContainer} key={photo.id}>
                     <Image
                         className={styles.PhotoImage}
@@ -145,7 +151,7 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
                 <Pagination currentPage={currentPage} totalItems={searchTotal} onPageChange={handlePageChange} />
             </div>}
             {isModalOpen && selectedPhoto && (
-                <Modal onClose={closeModal} photoInfo={selectedPhoto}/>
+                <Modal onClose={closeModal} photoInfo={selectedPhoto} onBookmarkClick={handleBookmarkClick} />
             )}
         </div>
     )
