@@ -31,6 +31,15 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
         }
     }, []);
 
+    useEffect(() => {
+        // NOTE(hajae): Modal Open시 외부 스크롤 방지
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
+
     // NOTE(hajae): photo response의 download_location를 이용해 download url을 request
     const handleDownloadButton = async () => {
         const response = await fetch(photoInfo.links.download_location, {
@@ -72,9 +81,14 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
         window.URL.revokeObjectURL(url)
     }
 
+    // NOTE(hajae): Modal 내부 클릭시 onClose 이벤트 발생 방지
+    const handleModalClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+    };
+
     return (
-        <div className={styles.ModalBackground}>
-            <div className={styles.ModalContent}>
+        <div className={styles.ModalBackground} onClick={onClose}>
+            <div className={styles.ModalContent} onClick={handleModalClick}>
                 <div className={styles.ModalHeader}>
                     <div className={styles.ModalHeaderItems}>
                         <span className={`${styles.ModalClose} ${styles.ModalHeaderItem}`} onClick={onClose}>
