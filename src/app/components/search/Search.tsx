@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./search.module.css";
-import { Photo, PhotoForList, PhotoResponse } from "@/types/unsplash";
+import { BookmarkedPhoto, Photo, PhotoForList, PhotoResponse } from "@/types/unsplash";
 import searchBoxBackground from "/public/images/search_box_background.jpg";
 import searchIcon from "/public/images/search_icon.svg";
 import bookmarkWhite from "/public/images/bookmark_white.svg";
@@ -26,7 +26,7 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
     const [currentPage, setCurrentPage] = useState(1);
 
     // NOTE(hajae): 로그인 기능이 따로 구현이 되어있지 않기 때문에 로컬스토리지에 북마크를 저장/관리
-    const [bookmarks, setBookmarks] = useLocalStorage<string[]>('bookmarks', []);
+    const [bookmarks, setBookmarks] = useLocalStorage<BookmarkedPhoto[]>('bookmarks', []);
 
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,15 +59,19 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
         onPageChange(page, searchTerm);
     };
 
-    const handleBookmarkClick = (photoId: string) => {
+    const handleBookmarkClick = (photoId: string, photoUrl: string) => {
+        const existingBookmarkIndex = bookmarks.findIndex((bookmark) => bookmark.id === photoId);
+
         // NOTE(hajae): 이미 북마크에 있는 경우 제거, 아닌 경우 추가
-        if (bookmarks.includes(photoId)) {
-            const updatedBookmarks = bookmarks.filter(id => id !== photoId);
-            localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
+        if (existingBookmarkIndex !== -1) {
+            const updatedBookmarks = [...bookmarks];
+            updatedBookmarks.splice(existingBookmarkIndex, 1);
+            localStorage.setItem('bookmarks', JSON.stringify(updatedBookmarks));
             setBookmarks(updatedBookmarks);
         } else {
-            const updatedBookmarks = [...bookmarks, photoId];
-            localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
+            const newBookmark: BookmarkedPhoto = { id: photoId, url: photoUrl };
+            const updatedBookmarks = [...bookmarks, newBookmark];
+            localStorage.setItem('bookmarks', JSON.stringify(updatedBookmarks));
             setBookmarks(updatedBookmarks);
         }
     };
@@ -81,6 +85,10 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
         setIsModalOpen(false);
         setSelectedPhoto(null);
     };
+
+    const isBookmarked = (photoId: string): boolean => {
+        return bookmarks.some((bookmark) => bookmark.id === photoId)
+    }
 
     // NOTE(hajae): 사진이 로딩, 유무에 따른 표시
     const renderPhotos = () => {
@@ -107,11 +115,11 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
                     />
                     <Image
                         className={styles.Bookmark}
-                        src={bookmarks.includes(photo.id) ? bookmarkFill.src : bookmarkWhite.src}
+                        src={isBookmarked(photo.id) ? bookmarkFill.src : bookmarkWhite.src}
                         alt="bookmark"
                         width={30}
                         height={30}
-                        onClick={() => handleBookmarkClick(photo.id)} />
+                        onClick={() => handleBookmarkClick(photo.id, photo.urls.small)} />
                 </div>
             ));
         }

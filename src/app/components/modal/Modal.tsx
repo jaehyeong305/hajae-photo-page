@@ -16,7 +16,7 @@ import addCommasToNumber from '@/app/utils/CountUtil';
 type ModalProps = {
     photoInfo: Photo;
     onClose: () => void;
-    onBookmarkClick: (photoId: string) => void;
+    onBookmarkClick: (photoId: string, photoUrl: string) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) => {
@@ -106,7 +106,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
                                 height={30}
                                 onClick={() => {
                                     setIsBookmarked(!isBookmarked);
-                                    onBookmarkClick(photoInfo.id);
+                                    onBookmarkClick(photoInfo.id, photoInfo.urls.small);
                                 }} />
                         </span>
                         <CustomButton value="다운로드" onClick={handleDownloadButton} />

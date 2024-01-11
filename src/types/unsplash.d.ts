@@ -107,4 +107,9 @@ type PhotoResponse = {
     photos: Photo;
 };
 
-export type { PhotoListResponse, PhotoResponse, PhotoForList, Photo };
+type BookmarkedPhoto = {
+    id: string;
+    url: string;
+}
+
+export type { PhotoListResponse, PhotoResponse, PhotoForList, Photo, BookmarkedPhoto };
