@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Photo } from '@/types/unsplash';
+import { Photo, PhotoForList } from '@/types/unsplash';
 import styles from './modal.module.css';
 import Image from 'next/image';
 import close from '/public/images/modal_close.svg';
@@ -16,7 +16,7 @@ import addCommasToNumber from '@/app/utils/CountUtil';
 type ModalProps = {
     photoInfo: Photo;
     onClose: () => void;
-    onBookmarkClick: (photoId: string, photoUrl: string) => void;
+    onBookmarkClick: (photo: PhotoForList) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) => {
@@ -26,8 +26,8 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
     useEffect(() => {
         const storedBookmarks = localStorage.getItem("bookmarks");
         if (storedBookmarks) {
-            const bookmarks = JSON.parse(storedBookmarks) as string[];
-            setIsBookmarked(bookmarks.includes(photoInfo.id));
+            const bookmarks = JSON.parse(storedBookmarks) as PhotoForList[];
+            setIsBookmarked(bookmarks.some(item => item.id === photoInfo.id));
         }
     }, []);
 
@@ -86,6 +86,23 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
         e.stopPropagation();
     };
 
+    const convertToPhotoForList = (photo: Photo): PhotoForList => {
+        return {
+            id: photo.id,
+            width: photo.width,
+            height: photo.height,
+            color: photo.color,
+            blur_hash: photo.blur_hash,
+            likes: photo.likes,
+            liked_by_user: photo.liked_by_user,
+            alt_description: photo.alt_description,
+            description: photo.description,
+            urls: photo.urls,
+            links: photo.links,
+            user: photo.user,
+        }
+    } 
+
     return (
         <div className={styles.ModalBackground} onClick={onClose}>
             <div className={styles.ModalContent} onClick={handleModalClick}>
@@ -106,7 +123,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
                                 height={30}
                                 onClick={() => {
                                     setIsBookmarked(!isBookmarked);
-                                    onBookmarkClick(photoInfo.id, photoInfo.urls.small);
+                                    onBookmarkClick(convertToPhotoForList(photoInfo));
                                 }} />
                         </span>
                         <CustomButton value="다운로드" onClick={handleDownloadButton} />
