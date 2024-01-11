@@ -1,11 +1,18 @@
 import formatDateDifference from './DateUtil';
 
 describe('formatDateDifference', () => {
-    const now = new Date('2024-01-10T00:00:00Z');
     const figure = [
         {
             postDate: '2024-01-10T00:00:00Z',
             expect: '방금 전 게시됨',
+        },
+        {
+            postDate: '2024-01-09T23:59:59Z',
+            expect: '1초 전 게시됨',
+        },
+        {
+            postDate: '2024-01-09T23:52:00Z',
+            expect: '8분 전 게시됨',
         },
         {
             postDate: '2024-01-05T10:00:00Z',
@@ -52,8 +59,6 @@ describe('formatDateDifference', () => {
 
                 const actual = formatDateDifference(f.postDate);
                 expect(actual).toEqual(f.expect);
-
-                jest.restoreAllMocks();
             });
         });
     });

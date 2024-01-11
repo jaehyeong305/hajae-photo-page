@@ -1,3 +1,4 @@
+// NOTE(hajae): 현재시간과 인자의 시간과의 차를 확인 후 며칠전 게시되었는지를 반환
 const formatDateDifference = (dateString: string): string => {
     const now = new Date();
     const postDate = new Date(dateString);

@@ -11,6 +11,7 @@ import LoadingSpinner from '../loadingSpinner/LoadingSpinner';
 import Tag from '../tag/Tag';
 import CustomButton from '../customButton/CustomButton';
 import formatDateDifference from '@/app/utils/DateUtil';
+import addCommasToNumber from '@/app/utils/CountUtil';
 
 type ModalProps = {
     photoInfo: Photo;
@@ -119,7 +120,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, photoInfo, onBookmarkClick }) =>
                     </div>
                     <div className={styles.ModalImageInfo}>
                         <span className={styles.ModalImageInfoTitle}>다운로드</span>
-                        <span className={styles.ModalImageInfoBody}>{photoInfo.downloads}</span>
+                        <span className={styles.ModalImageInfoBody}>{addCommasToNumber(photoInfo.downloads)}</span>
                     </div>
                 </div>
                 <div className={styles.ModalImageTags}>
