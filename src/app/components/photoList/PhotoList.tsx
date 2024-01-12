@@ -16,9 +16,10 @@ type PhotoListProps = {
     searchTotal: number;
     searchTerm?: string;
     onPageChange: (page: number, searchTerm?: string) => void;
+    onBookmarkChange?: () => void;
 }
 
-const PhotoList: React.FC<PhotoListProps> = ({ isLoading, photos, photoListCurrentPage, searchTotal, searchTerm, onPageChange }) => {
+const PhotoList: React.FC<PhotoListProps> = ({ isLoading, photos, photoListCurrentPage, searchTotal, searchTerm, onPageChange, onBookmarkChange }) => {
     const [currentPage, setCurrentPage] = useState(photoListCurrentPage);
 
     // NOTE(hajae): 로그인 기능이 따로 구현이 되어있지 않기 때문에 로컬스토리지에 북마크를 저장/관리
@@ -64,6 +65,7 @@ const PhotoList: React.FC<PhotoListProps> = ({ isLoading, photos, photoListCurre
             updatedBookmarks.splice(existingBookmarkIndex, 1);
             localStorage.setItem('bookmarks', JSON.stringify(updatedBookmarks));
             setBookmarks(updatedBookmarks);
+            if (onBookmarkChange) onBookmarkChange();
         } else {
             const updatedBookmarks = [...bookmarks, photo];
             localStorage.setItem('bookmarks', JSON.stringify(updatedBookmarks));
