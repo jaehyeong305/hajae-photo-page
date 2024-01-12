@@ -1,3 +1,14 @@
-.BookmarkWrapper {
-    
+.BookmarkTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 20px;
+    width: 100vw;
+    height: 30vh;
+
+    background: linear-gradient(45deg, #ffccd2, #ffd8a8, #e2f0cb, #a7f0cb, #a8cfff);
+    color: #444444;
+    font-size: 2rem;
+    font-weight: 600;
 }

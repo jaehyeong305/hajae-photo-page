@@ -35,6 +35,9 @@ const Bookmark: React.FC = () => {
     return (
         <div className={styles.BookmarkWrapper}>
             <Header />
+            <div className={styles.BookmarkTitle}>
+                북마크한 사진들 😀
+            </div>
             <PhotoList 
                 isLoading={isLoading}
                 photos={photoList}
