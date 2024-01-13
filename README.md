@@ -37,3 +37,8 @@ search: taxi
 
 `/bookmark`
 ![image](https://github.com/jaehyeong305/willog/assets/131584557/53db2091-5c8f-4853-a233-fe7723806838)
+
+상세 이미지 모달
+![image](https://github.com/jaehyeong305/willog/assets/131584557/a4e9c50b-2a9d-453d-a1a6-de0d8ce6e0bb)
+![image](https://github.com/jaehyeong305/willog/assets/131584557/1af5b699-9857-4a17-9792-83404ab662d8)
+
