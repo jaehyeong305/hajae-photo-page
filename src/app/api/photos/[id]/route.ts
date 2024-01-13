@@ -1,3 +1,5 @@
+import { defaultUnsplashErrorHandler } from "@/app/api/global-error-handler";
+
 // NOTE(hajae): GET /api/photos/:id
 export const GET = async (request: Request, { params }: { params: { id: string } }) => {
     try {
@@ -10,13 +12,15 @@ export const GET = async (request: Request, { params }: { params: { id: string }
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(`API request failed: ${errorData.message}`);
+            throw new Error(defaultUnsplashErrorHandler(errorData.status));
         }
 
         const photos = await response.json();
         return Response.json({ photos });
-    } catch (error) {
-        console.error('Error in GET /api/photos/:id : ', error);
+    } catch (error: any) {
+        if (error instanceof Error) {
+            console.error('Error in GET /api/photos/:id : ', error.message);
+        }
         throw error;
     }
 };
