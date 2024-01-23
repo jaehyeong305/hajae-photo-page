@@ -1,6 +1,6 @@
 import styles from "./header.module.css";
 import Image from 'next/image'
-import logo from '/public/images/logo.png'
+import logo from '/public/images/logo.jpg'
 import bookmark from '/public/images/bookmark.svg'
 import Link from "next/link";
 import CustomButton from "../customButton/CustomButton";
@@ -10,7 +10,7 @@ const Header: React.FC = () => {
         <div className={styles.HeaderWrapper}>
             <div>
                 <Link href="/">
-                    <Image src={logo.src} width={105} height={30} alt="logo" />
+                    <Image className={styles.logo} src={logo.src} width={50} height={50} alt="logo" />
                 </Link>
             </div>
             <div>

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { PhotoForList, PhotoListResponse } from '@/types/unsplash';
 import { SearchPhotos } from '@/types/search';
 
-export default function Home() {
+const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSearched, setIsSearched] = useState(false);
   const [photos, setPhotos] = useState<PhotoForList[]>([]);
@@ -79,3 +79,5 @@ export default function Home() {
     </main>
   )
 }
+
+export default Home;

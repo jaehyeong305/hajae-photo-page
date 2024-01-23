@@ -38,8 +38,8 @@ const PhotoList: React.FC<PhotoListProps> = ({ isLoading, photos, photoListCurre
         }
     };
     const handleImageClick = (photo: PhotoForList) => {
-        fetchPhotoById(photo.id);
         setIsModalOpen(true);
+        fetchPhotoById(photo.id);
     };
 
     const isBookmarked = (photoId: string): boolean => {
