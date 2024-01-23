@@ -6,7 +6,7 @@ export const GET = async (request: Request, { params }: { params: { id: string }
         const photoId = params.id;
         const response = await fetch(`https://api.unsplash.com/photos/${photoId}`, {
             headers: {
-                'Authorization': `Client-ID 35uTnjYzFrY-HrbqXeIQC8n2byaF0PtHxxGFj0e956w`,
+                'Authorization': `Client-ID ${process.env.NEXT_PUBLIC_API_CLIENT_ID}`,
             },
         });
 

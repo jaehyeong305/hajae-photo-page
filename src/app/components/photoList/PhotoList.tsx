@@ -8,6 +8,7 @@ import useLocalStorage from '@/app/hooks/useLocalStorage';
 import { useState } from 'react';
 import bookmarkWhite from "/public/images/bookmark_white.svg";
 import bookmarkFill from "/public/images/bookmark_fill.svg";
+import { fetchUnsplashPhotoBy } from '@/app/services/photo.service';
 
 type PhotoListProps = {
     isLoading: boolean;
@@ -28,18 +29,14 @@ const PhotoList: React.FC<PhotoListProps> = ({ isLoading, photos, photoListCurre
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const fetchPhotoById = async (photoId: string) => {
-        try {
-            const response = await fetch(`/api/photos/${photoId}`);
-            const data: PhotoResponse = await response.json();
-            setSelectedPhoto(data.photos);
-        } catch (error) {
-            console.error('Error fetching Unsplash data:', error);
-        }
-    };
+    const fetchPhotoById = (photoId: string) => {
+        fetchUnsplashPhotoBy(photoId)
+            .then((res: PhotoResponse) => { setSelectedPhoto(res.photos); });
+    }
+
     const handleImageClick = (photo: PhotoForList) => {
-        fetchPhotoById(photo.id);
         setIsModalOpen(true);
+        fetchPhotoById(photo.id);
     };
 
     const isBookmarked = (photoId: string): boolean => {
