@@ -6,6 +6,7 @@ import Search from './components/search/Search'
 import { useEffect, useState } from 'react';
 import { PhotoForList, PhotoListResponse } from '@/types/unsplash';
 import { SearchPhotos } from '@/types/search';
+import { fetchUnsplashPhotoListBy, searchUnsplashPhotoList, searchUnsplashPhotoListBy } from './services/photo.service';
 
 const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,63 +14,51 @@ const Home: React.FC = () => {
   const [photos, setPhotos] = useState<PhotoForList[]>([]);
   const [searchTotal, setSearchTotal] = useState<number>(20000);
 
-  const fetchPhotos = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch('/api/unsplash/1');
-      const data = await response.json();
-      setPhotos(data.photos);
-    } catch (error) {
-      console.error('Error fetching Unsplash data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const fetchPhotoList = (page: number) => {
+    setIsLoading(true);
+    fetchUnsplashPhotoListBy(page)
+      .then((res: PhotoListResponse) => { setPhotos(res.photos); })
+      .finally(() => { setIsLoading(false); });
+  }
 
-  useEffect(() => {
-    fetchPhotos();
-  }, []);
-
-  const handlePageChange = async (page: number, searchTerm?: string) => {
-    try {
-      if (isSearched && searchTerm) {
-        setIsLoading(true);
-        const response = await fetch(`/api/search/${searchTerm}/${page}`);
-        const data: SearchPhotos = await response.json();
-        setPhotos(data.photos.results);
-      } else {
-        setIsLoading(true);
-        const response = await fetch(`/api/unsplash/${page}`);
-        const data: PhotoListResponse = await response.json();
-        setPhotos(data.photos);
-      }
-    } catch (error) {
-      console.error('Error fetching Unsplash data:', error);
-    } finally {
-      setIsLoading(false);
+  const searchPhotoList = (searchTerm: string, page?: number) => {
+    setIsLoading(true);
+    if (page) {
+      searchUnsplashPhotoListBy(searchTerm, page)
+        .then((res: SearchPhotos) => { setPhotos(res.photos.results); })
+        .finally(() => { setIsLoading(false); });
+    } else {
+      setIsSearched(true);
+      searchUnsplashPhotoList(searchTerm)
+        .then((res: SearchPhotos) => {
+          setPhotos(res.photos.results);
+          setSearchTotal(res.photos.total);
+        })
+        .finally(() => { setIsLoading(false); });
     }
   }
 
-  const handleSearch = async (searchTerm?: string) => {
+  useEffect(() => {
+    fetchPhotoList(1);
+  }, []);
+
+  const handlePageChange = (page: number, searchTerm?: string) => {
+    if (isSearched && searchTerm) {
+      searchPhotoList(searchTerm, page);
+    } else {
+      fetchPhotoList(page);
+    }
+  }
+
+  const handleSearch = (searchTerm?: string) => {
     // NOTE(hajae): 빈값으로 검색 -> 기본 fetch api를 request
     if (!searchTerm) {
-      fetchPhotos();
+      fetchPhotoList(1);
       setSearchTotal(20000);
       return;
     }
 
-    try {
-      setIsLoading(true);
-      setIsSearched(true);
-      const response = await fetch(`/api/search/${searchTerm}`);
-      const data: SearchPhotos = await response.json();
-      setPhotos(data.photos.results);
-      setSearchTotal(data.photos.total);
-    } catch (error) {
-      console.error('Error fetching Unsplash data:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    searchPhotoList(searchTerm);
   };
 
   return (

@@ -100,7 +100,7 @@ type CurrentUserCollection = {
 }
 
 type PhotoListResponse = {
-    photos: PhotoList[];
+    photos: PhotoForList[];
 }
 
 type PhotoResponse = {
