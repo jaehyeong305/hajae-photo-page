@@ -38,7 +38,7 @@ const Search: React.FC<SearchProps> = ({ isLoading, photos, searchTotal, onSearc
             <div className={styles.SearchBarWrapper}>
                 <div className={styles.SearchBoxBackground} style={{ backgroundImage: `url(${searchBoxBackground.src})` }}></div>
                 <div className={styles.SearchBar}>
-                    <span className={styles.SearchBarTitle}>Will Photo</span>
+                    <span className={styles.SearchBarTitle}>HaJae Photo</span>
                     <span className={styles.SearchBarDescription}>인터넷의 시각 자료 출처입니다.</span>
                     <span className={styles.SearchBarDescription}>모든 지역에 있는 크리에이터들의 지원을 받습니다.</span>
                     <div className={styles.SearchInputBox}>
