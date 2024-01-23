@@ -15,6 +15,13 @@ Next.js에 익숙해지기 위해
     - Typescript
 
 ### 실행 방법
+1. unsplash [개발자 페이지](https://unsplash.com/developers)에 접속하여 Application 등록을 한다.
+2. 해당 Repository를 clone 후, 발급받은 Access Key를 아래 파일의 `${process.env.NEXT_PUBLIC_API_CLIENT_ID}`에 덮어쓴다.
+    - src/api/photos/[id]/route.ts
+    - src/api/search/[searchTerm]/route.ts
+    - src/api/search/[searchTerm]/[page]/route.ts
+    - src/api/unsplash/[page]/route.ts
+3. 그 후 실행
 ```
 $ npm install
 $ npm run dev
@@ -30,19 +37,13 @@ $ npm run start
 $ npm run test
 ```
 
-### [WIP] 실행 화면
-`/`
-![image](https://github.com/jaehyeong305/willog/assets/131584557/734205bd-44ef-4671-854d-0053dd9bd913)
-![image](https://github.com/jaehyeong305/willog/assets/131584557/3e6bdade-90f8-45fe-9a5a-cc77523c0263)
+### 실행 화면
+메인화면
+<img width="1512" alt="image" src="https://github.com/jaehyeong305/hajae-photo-page/assets/131584557/10d4d912-b75b-4eed-acd9-e1c4073e8811">
+<img width="1512" alt="image" src="https://github.com/jaehyeong305/hajae-photo-page/assets/131584557/3e3ef0ec-6ea9-450a-9112-5143729a179e">
 
-search: taxi
-![image](https://github.com/jaehyeong305/willog/assets/131584557/fb0cda6c-8dc4-4243-9dc6-bd8e1738c8d7)
+북마크
+<img width="1512" alt="image" src="https://github.com/jaehyeong305/hajae-photo-page/assets/131584557/da75c824-7c4e-4c25-aa1c-6faee72d8dd2">
 
-
-`/bookmark`
-![image](https://github.com/jaehyeong305/willog/assets/131584557/53db2091-5c8f-4853-a233-fe7723806838)
-
-상세 이미지 모달
-![image](https://github.com/jaehyeong305/willog/assets/131584557/a4e9c50b-2a9d-453d-a1a6-de0d8ce6e0bb)
-![image](https://github.com/jaehyeong305/willog/assets/131584557/1af5b699-9857-4a17-9792-83404ab662d8)
-
+상세 모달
+<img width="1512" alt="image" src="https://github.com/jaehyeong305/hajae-photo-page/assets/131584557/aaec2064-e123-44d1-9f09-d4f5057c26b1">
