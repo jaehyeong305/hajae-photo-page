@@ -16,7 +16,7 @@ type PhotoItemProps = {
 const PhotoItem: React.FC<PhotoItemProps> = ({ photo, onBookmarkChange }) => {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
+
     // NOTE(hajae): 로그인 기능이 따로 구현이 되어있지 않기 때문에 로컬스토리지에 북마크를 저장/관리
     const [bookmarks, setBookmarks] = useLocalStorage<PhotoForList[]>('bookmarks', []);
 
@@ -59,7 +59,7 @@ const PhotoItem: React.FC<PhotoItemProps> = ({ photo, onBookmarkChange }) => {
 
     return (
         <div>
-            <div>
+            <div className={styles.PhotoImageContainer}>
                 <Image
                     className={styles.PhotoImage}
                     src={photo.urls.small}
@@ -81,7 +81,6 @@ const PhotoItem: React.FC<PhotoItemProps> = ({ photo, onBookmarkChange }) => {
                 <Modal onClose={closeModal} photoInfo={selectedPhoto} onBookmarkClick={handleBookmarkClick} />
             )}
         </div>
-
     )
 }
 

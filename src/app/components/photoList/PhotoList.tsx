@@ -37,12 +37,10 @@ const PhotoList: React.FC<PhotoListProps> = ({ isLoading, photos, photoListCurre
             )
         } else {
             return photos.map((photo: PhotoForList) => (
-                <div className={styles.PhotoImageContainer}>
-                    <PhotoItem 
-                        key={photo.id}
-                        photo={photo}
-                        onBookmarkChange={onBookmarkChange}/>
-                </div>
+                <PhotoItem
+                    key={photo.id}
+                    photo={photo}
+                    onBookmarkChange={onBookmarkChange} />
             ));
         }
     };
