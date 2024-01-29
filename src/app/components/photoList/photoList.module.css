@@ -14,28 +14,6 @@
     overflow: hidden;
 }
 
-.PhotoImage {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.PhotoImage:hover {
-    filter: brightness(0.7);
-    cursor: pointer;
-}
-
-.Bookmark {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    margin: 5px;
-    z-index: 1;
-
-    cursor: pointer;
-}
-
 .PhotoNotFound {
     position: absolute;
     display: flex;
