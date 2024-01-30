@@ -1,4 +1,4 @@
-import { defaultUnsplashErrorHandler } from "@/app/api/global-error-handler";
+import { defaultUnsplashErrorHandler } from "@/app/api/GlobalErrorHandler";
 
 // NOTE(hajae): GET /api/search
 export const GET = async (request: Request, { params }: { params: { searchTerm: string, page: number }}) => {
